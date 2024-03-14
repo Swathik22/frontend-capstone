@@ -1,0 +1,10 @@
+.tickets{
+    display: flex;
+    justify-content: space-around;    
+    flex-direction: row;
+    background-color: rgb(239, 217, 217);    
+    border: 1px solid var(--outline);
+    margin: 0.5rem 0;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+}
