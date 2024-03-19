@@ -22,26 +22,37 @@ export const AllTickets=()=>{
     },[searchTicket,allTicketsList])
     
     return (
-        <>
-        <input type="text"
+        <><div className="divAllTickets">
+        <div className="divSearch">
+        <input type="text" className="txtSearch"
             placeholder="Search Ticket"
             id="txtSearch"
             onChange={(event)=>{
                 setSearchTicket(event.target.value)
             }}
         />
-
+      </div>
+      <div className="allTicketsHeader" key={1}>
+        <div className="user-info">CreatedBy</div>
+        <div className="user-info">Ticket</div>
+        <div className="user-info">Status</div>
+        <div className="user-info">Priority</div>
+        <div className="user-info">Description</div>
+    </div>
+    <div>
             {
             filteredTickets.map(ticket=>{
                 return (
-                    <Link to={`/tickets/${ticket.id}`}>
-                    <Ticket ticket={ticket}/>
+                    <Link to={`/tickets/${ticket.id}`} className="ticketLink" key={ticket.id}>
+                    <Ticket ticket={ticket} />
                     </Link>
                       )             
             }
                 
             )
             }
+            </div>
+            </div>
         </>
     )
 }

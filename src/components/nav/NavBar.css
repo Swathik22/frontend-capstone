@@ -1,10 +1,10 @@
 .navbar {
     display: flex;
     flex-wrap: nowrap;
-    background-color: var(--dark);
+    background-color: rgb(6, 24, 9);
     margin: 0;
     width: 100%;
-    padding: 0.5rem;
+    padding: 0.6rem;
   }
 
   .navbar-item {
@@ -16,8 +16,10 @@
 
   .navbar-link {
     text-decoration: none;
+    font:bold;
     font-family: "Quicksand", sans-serif;
     letter-spacing: 1px;
+    color: white;
   }
 
   .navbar-logout {
@@ -26,4 +28,9 @@
 
   .navbar-link:hover {
     color: var(--primary);
+  }
+
+  .navbar-a{
+    color:azure;
+    font-family: 'sans-serif;
   }

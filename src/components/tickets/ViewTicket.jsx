@@ -1,16 +1,20 @@
 import { useEffect, useState } from "react"
 import { getPriorities, getStatus } from "../../services/statusService"
 import { useNavigate, useParams } from "react-router-dom"
-import { getAllTickets, updateTicket } from "../../services/ticketsServices"
-import { getAllEmployees } from "../../services/employeeService"
+import { deleteTicket, getAllTickets, updateTicket } from "../../services/ticketsServices"
+import { deleteAssignedEmployeeTicket, 
+    getAllEmployees, 
+    getAssignedEmployeeTickets, 
+    updateAssignedEmployeeTicket } from "../../services/employeeService"
 
-
+import "./newTicket.css"
 export const ViewTicket=()=>{    
     const[statusOptions,setStatusOptions]=useState([])    
     const[priorityOptions,setPriorityOptions]=useState([])
     const[ticket,setTicket]=useState({})
     const[allEmployees,setAllEmployees]=useState([])
     const[deleteBtnEnable,setDeleteBtnEnable]=useState(false)
+    const[assignedEmployeeTickets,setAssignedEmployeeTickets]=useState({})
 
     const {ticketId}=useParams()
     const navigate=useNavigate()
@@ -25,12 +29,17 @@ export const ViewTicket=()=>{
         getAllEmployees().then((employeeArray)=>{
             setAllEmployees(employeeArray)
         })
+        
     },[])
 
     useEffect(()=>{
         getAllTickets().then((allTicketsArray)=>{
             const ticketObj=allTicketsArray.find((eachTicket)=>eachTicket.id===parseInt(ticketId))            
             setTicket(ticketObj)
+
+            getAssignedEmployeeTickets(ticketObj.id).then((assignedTickets)=>{
+                setAssignedEmployeeTickets(assignedTickets[0])})
+
             if(ticketObj.statusId==4){
                 setDeleteBtnEnable(true)
             }
@@ -50,6 +59,15 @@ export const ViewTicket=()=>{
         setTicket(ticketCopy)
     }
 
+    const handleAssigneeTicketEvent=(event)=>{
+        const assignedTicketCopy={...assignedEmployeeTickets}
+        assignedTicketCopy.employeeId=parseInt(event.target.value)
+        assignedTicketCopy.assignedDate=new Date
+        setAssignedEmployeeTickets(assignedTicketCopy)
+        
+        
+    }
+
     const handleEditEvent=(event)=>{
         event.preventDefault()
 
@@ -58,48 +76,68 @@ export const ViewTicket=()=>{
             ticket:ticket.ticket,
             description:ticket.description,
             createdDate:ticket.createdDate,
-            employeeId:ticket.employeeId,
-            statusId:ticket.statusId,
-            priorityId:ticket.priorityId
+            employeeId:parseInt(ticket.employeeId),
+            statusId:parseInt(ticket.statusId),
+            priorityId:parseInt(ticket.priorityId)
         }
 
-        updateTicket(ticketToUpdate).then(
-           navigate(`/tickets`)
-        )
+        if(ticket.statusId==4){
+            assignedEmployeeTickets.resolvedDate=new Date
+        }
+        else{
+            assignedEmployeeTickets.resolvedDate=null
+        }
+        updateTicket(ticketToUpdate?ticketToUpdate:'').then(
+            updateAssignedEmployeeTicket(assignedEmployeeTickets).then(
+                navigate(`/tickets`))           
+        )        
     }
-
+    
     const handleDeleteEvent=(event)=>{
-        //code for delete event need to implement
+        event.preventDefault()
+        deleteTicket(ticket.id).then(
+            deleteAssignedEmployeeTicket(assignedEmployeeTickets.id).then(
+                navigate(`/tickets`))
+            
+        )
     }
 
     return (
     <>
-        <form>
-            <fieldset>
-                <label>Ticket</label>
-                <input type="text" name="ticket" disabled value={ticket.ticket?ticket.ticket:""}/>
+        <form className="form-container" key={ticket.id}>
+            <h2>Edit Ticket</h2>
+            <fieldset className="form-group">
+                <label>CreatedBy: </label><label>{ticket.employee?.fullName}</label>
             </fieldset>
-            <fieldset>
-                <label>Description</label>
-                <textarea name="description" value={ticket.description?ticket.description:""}/>
+            <fieldset className="form-group">
+                <label>Ticket: </label>
+                <input type="text" name="ticket" disabled  defaultValue={ticket.ticket?ticket.ticket:""}/>
             </fieldset>
-            <fieldset>
-                <label>Status</label>
+            <fieldset className="form-group">
+                <label></label>
+            </fieldset>
+            <fieldset className="form-group">
+                <label>Description:</label>
+                <textarea name="description" value={ticket.description?ticket.description:""} onChange={handleInputChangesForForm}/>
+            </fieldset>
+            <fieldset className="form-group">
+                <label>Status:</label>
                 <select value={ticket.statusId} name="statusId" onChange={handleInputChangesForForm}>
                     <option value="0">select Status</option>
                     {statusOptions.map((status)=>{
-                        return <option value={status.id}>{status.name}</option>
+                        return <option value={status.id} key={status.id}>{status.name}</option>
                     })}
                 </select>                    
             </fieldset>
-            <fieldset>
-                <label>Priority</label>
+            <fieldset className="form-group radio-group">
+                <label>Priority:</label>
                 {priorityOptions.map(priorityObj => (
                     <label key={priorityObj.id}>
                         <input
                             type="radio"
-                            name="priorityId"
+                            name="priorityId"                           
                             value={priorityObj.id}
+                            
                             checked={parseInt(ticket.priorityId) === priorityObj.id}
                                 onChange={handleInputChangesForForm}
                         />
@@ -107,24 +145,24 @@ export const ViewTicket=()=>{
                     </label>
                 ))}     
             </fieldset>
-            <fieldset>
-                <label>AssignedTo</label>
-                <select value={ticket.employeeId} name="employeeId" 
-                    onChange={handleInputChangesForForm}
+            <fieldset className="form-group">
+                <label>AssignedTo:</label>
+                <select value={assignedEmployeeTickets?.employeeId} name="employeeId" 
+                    onChange={handleAssigneeTicketEvent}
                 >
                     <option value="0">select Employee</option>
                     {allEmployees.map((employee)=>{
-                        return <option value={employee.id}>{employee.fullName}</option>
+                        return <option value={employee.id} key={employee.id}>{employee.fullName}</option>
                     })}
                 </select>    
             </fieldset>
-            <footer>
-                <div>
+            <footer >
+                <div className="divUpdateDelete">
                     <div>
-                        <button id="btnEdit" onClick={handleEditEvent}>Edit</button>
+                        <button id="btnEdit" className="updateBtn" onClick={handleEditEvent}>Update</button>
                     </div>  
                     <div>                 
-                        <button id="btnDelete" disabled={!deleteBtnEnable} onClick={handleDeleteEvent}>Delete</button>
+                        <button id="btnDelete" className="deleteBtn" disabled={!deleteBtnEnable} onClick={handleDeleteEvent}>Delete</button>
                     </div> 
                 </div>
             </footer>

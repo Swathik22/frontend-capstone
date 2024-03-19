@@ -1,0 +1,96 @@
+/* Form container */
+.form-container {
+    max-width: 600px;
+    border:2px solid rgb(231, 151, 46);
+    margin: 0 auto;
+  margin-top: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+
+  }
+  
+  /* Form elements */
+  .form-fieldSet {
+    margin-bottom: 0px;
+    align-items: center;
+    padding: 10px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: bold;
+    color: rgb(2, 40, 2);
+  }
+  
+  input[type="text"],
+  textarea {
+    width: 90%;
+    padding: 4px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+
+    /* width: 10px;  */
+  height: 20px; 
+  /* border: 1px solid #ccc;
+  border-radius: 5px;  */
+  padding: 10px;
+  font-size: medium;
+  box-shadow: 0px 0px 0px 4px rgba(238, 133, 226, 0.1); 
+  }
+  
+  textarea {
+    resize: vertical; /* Allow vertical resizing */
+  }
+  
+  button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  
+  /* Radio buttons */
+  .radio-group {
+    display: flex;
+    flex-direction: row;
+        
+  }
+  
+  .radio-group label {
+    margin-right: 10px;
+  }
+  
+  /* Dropdown */
+  select {
+    width: 95%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    cursor: pointer;
+  }
+  
+  /* Optional: Style for selected option */
+  select option:checked {
+    background-color: #f0f0f0;
+  }
+
+  .saveButton{
+  left: 0;
+  width: 100%;
+  text-align: center;
+  padding: 10px 0;
+ 
+  }
+
+  .imgTag{
+    width:150px;
+    height:auto;
+}
