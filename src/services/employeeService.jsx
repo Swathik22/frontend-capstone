@@ -4,7 +4,7 @@ export const getAllEmployees=async ()=>{
 }
 
 export const getAssignedEmployeeTickets=async (ticketId)=>{
-    const res = await fetch(`http://localhost:8088/assignedEmployeeTickets?ticketId=${ticketId}`)
+    const res = await fetch(`http://localhost:8088/assignedEmployeeTickets?ticketId=${ticketId}&_expand=employee`)
     return await res.json()
 
 }
@@ -58,3 +58,4 @@ export const updateEmployeeProfile=(employeeProfile)=>{
     })
 
 }
+

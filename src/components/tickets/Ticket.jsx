@@ -1,5 +1,6 @@
 import "./tickets.css"
-export const Ticket=({ticket})=>{
+
+export const Ticket=({ticket,assignedTo})=>{
     return (
 <>
     
@@ -8,7 +9,8 @@ export const Ticket=({ticket})=>{
             <div className="grid-item">{ticket.employee?.fullName}</div>
             <div className="grid-item">{ticket.ticket}</div>                     
             <div className="grid-item">{ticket.status.name}</div>                    
-            <div className="grid-item">{ticket.priority.name}</div>                     
+            <div className="grid-item">{ticket.priority.name}</div> 
+            <div className="grid-item">{assignedTo}</div>                    
             <div className="grid-item">{ticket.description}</div>
       
     </div>

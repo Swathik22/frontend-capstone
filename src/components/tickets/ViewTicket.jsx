@@ -15,6 +15,7 @@ export const ViewTicket=()=>{
     const[allEmployees,setAllEmployees]=useState([])
     const[deleteBtnEnable,setDeleteBtnEnable]=useState(false)
     const[assignedEmployeeTickets,setAssignedEmployeeTickets]=useState({})
+    const[isAssignedTicket,setIsAssignedTicket]=useState(false)
 
     const {ticketId}=useParams()
     const navigate=useNavigate()
@@ -39,7 +40,7 @@ export const ViewTicket=()=>{
 
             getAssignedEmployeeTickets(ticketObj.id).then((assignedTickets)=>{
                 setAssignedEmployeeTickets(assignedTickets[0])})
-
+                
             if(ticketObj.statusId==4){
                 setDeleteBtnEnable(true)
             }
@@ -70,7 +71,7 @@ export const ViewTicket=()=>{
 
     const handleEditEvent=(event)=>{
         event.preventDefault()
-
+debugger
         const ticketToUpdate={
             id:ticket.id,
             ticket:ticket.ticket,
