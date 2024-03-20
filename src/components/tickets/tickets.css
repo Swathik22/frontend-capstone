@@ -74,7 +74,7 @@
 
 .grid-container {
     display: grid;
-    grid-template-columns: repeat(5,300px); /* Adjust the number and size of columns as needed */
+    grid-template-columns: repeat(6,243px); /* Adjust the number and size of columns as needed */
     /* gap: 10px; Adjust the gap between grid items as needed */
     border: 2px solid #000; 
     border-radius: 5px;
