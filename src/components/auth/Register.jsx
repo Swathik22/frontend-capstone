@@ -7,7 +7,10 @@ export const Register = (props) => {
   const [customer, setCustomer] = useState({
     email: "",
     fullName: "",
-    isStaff: false,
+    phoneNumber:"",
+    address:"",
+    role:"",
+    image:"images/employee8.png"
   })
   let navigate = useNavigate()
 
@@ -18,7 +21,7 @@ export const Register = (props) => {
           "employee_ticket",
           JSON.stringify({
             id: createdUser.id,
-            staff: createdUser.isStaff,
+            //staff: createdUser.isStaff,
           })
         )
 
@@ -58,7 +61,7 @@ export const Register = (props) => {
               type="text"
               id="fullName"
               className="form-control"
-              placeholder="Enter your name"
+              placeholder="Enter your FullName"
               required
               autoFocus
             />
@@ -68,28 +71,60 @@ export const Register = (props) => {
           <div className="form-group">
             <input
               onChange={updateCustomer}
-              type="email"
+              type="text"
               id="email"
               className="form-control"
-              placeholder="Email address"
+              placeholder="Enter your Email"
+              required             
+            />
+          </div>
+        </fieldset>
+        <fieldset>
+          <div className="form-group">
+            <input
+              onChange={updateCustomer}
+              type="text"
+              id="phoneNumber"
+              className="form-control"
+              placeholder="Enter phone Number"
               required
             />
           </div>
         </fieldset>
         <fieldset>
           <div className="form-group">
-            <label>
-              <input
-                onChange={(evt) => {
-                  const copy = { ...customer }
-                  copy.isStaff = evt.target.checked
-                  setCustomer(copy)
-                }}
-                type="checkbox"
-                id="isStaff"
-              />
-              I am an employee{" "}
-            </label>
+            <input
+              onChange={updateCustomer}
+              type="text"
+              id="address"
+              className="form-control"
+              placeholder="Enter Address"
+              required
+            />
+          </div>
+        </fieldset>
+        <fieldset>
+          <div className="form-group">
+            <input
+              onChange={updateCustomer}
+              type="text"
+              id="role"
+              className="form-control"
+              placeholder="Enter Role"
+              required
+            />
+          </div>
+        </fieldset>
+        <fieldset> 
+        <div className="form-group">
+            <input
+              onChange={updateCustomer}
+              type="text"
+              id="image"
+              className="form-control"
+              value="images/employee8.png"
+              required
+            />
           </div>
         </fieldset>
         <fieldset>

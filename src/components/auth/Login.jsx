@@ -18,7 +18,7 @@ export const Login = () => {
           "employee_ticket",
           JSON.stringify({
             id: user.id,
-            isStaff: user.isStaff,
+            //isStaff: user.isStaff,
           })
         )
 
