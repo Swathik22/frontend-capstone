@@ -1,0 +1,39 @@
+.divContainer{
+    /* display: flex;
+    width: 50%;
+    
+    justify-content: center;
+    align-items: center;
+    
+    border-radius: 5px; */
+
+    background-color: var(--white);
+    border: 1px solid var(--outline);
+    border-radius: 0.5rem;   
+    width:20%;
+    align-items: center; 
+    padding: 40px;   
+    border: 2px solid pink; 
+    margin:5rem 20rem 40rem 35rem;
+}
+.header {
+    font-size: larger;
+    font-weight: 700;
+    line-height: 3rem;
+    color: var(--primary);
+  }
+
+.employee-info {
+color: var(--info);
+font-size: medium;
+color: rgb(75, 34, 34);
+font-family: "Roboto", sans-serif;
+margin : 2px;
+}
+
+.btnCancel {
+    margin-top:1em;
+    display:flex;
+    justify-content: flex-end;
+   
+  }

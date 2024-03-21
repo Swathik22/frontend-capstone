@@ -7,6 +7,7 @@ import { ViewTicket } from "../components/tickets/ViewTicket"
 import { NewTicket } from "../components/tickets/NewTicket"
 import { MyTickets } from "../components/tickets/MyTickets"
 import { Profile } from "../components/profile/Profile"
+import { TicketCreatedEmployeeProfile } from "../components/profile/TicketCreatedEmployeeProfile"
 
 export const ApplicationViews = () => {
 const [currentUser,setCurrentUser]=useState({})
@@ -39,6 +40,7 @@ useEffect(()=>{
 
       <Route path="profile" element={<Profile currentUser={currentUser}/>}></Route>
       
+      <Route path="employeeInfo/:ticketId" element={<TicketCreatedEmployeeProfile/>}/>
     </Route>
     </Routes>
   </>

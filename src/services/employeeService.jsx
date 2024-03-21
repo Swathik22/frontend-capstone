@@ -39,7 +39,7 @@ export const createAssignedEmployeeTicket=async (assignTicket)=>{
 }
 
 export const getAssignedTicketsByEmployeeId=async (employeeId)=>{
-    const res = await fetch(`http://localhost:8088/assignedEmployeeTickets?employeeId=${employeeId}&_expand=ticket`)
+    const res = await fetch(`http://localhost:8088/assignedEmployeeTickets?employeeId=${employeeId}&_expand=ticket&_expand=employee`)
     return await res.json()
 }
 

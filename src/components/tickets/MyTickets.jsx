@@ -72,6 +72,7 @@ export const MyTickets=({currentUser})=>{
             <div className="user-info">Ticket</div>
             <div className="user-info">Status</div>
             <div className="user-info">Priority</div>
+            <div className="user-info">AssignedTo</div>
             <div className="user-info">Description</div>
         </div>
      
@@ -79,7 +80,7 @@ export const MyTickets=({currentUser})=>{
             filteredTickets.map(ticket=>{
                 return (                    
                     <Link to={`/tickets/${ticket.id}`} className="ticketLink" key={ticket.id}>
-                    <Ticket ticket={ticket} key={ticket.id}/>
+                    <Ticket ticket={ticket} key={ticket.id} assignedTo={ticket.employee?.fullName}/>
                     </Link>
                       )             
             }

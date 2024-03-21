@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { getPriorities, getStatus } from "../../services/statusService"
-import { useNavigate, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import { deleteTicket, getAllTickets, updateTicket } from "../../services/ticketsServices"
 import { deleteAssignedEmployeeTicket, 
     getAllEmployees, 
@@ -8,6 +8,7 @@ import { deleteAssignedEmployeeTicket,
     updateAssignedEmployeeTicket } from "../../services/employeeService"
 
 import "./newTicket.css"
+import { Profile } from "../profile/Profile"
 export const ViewTicket=()=>{    
     const[statusOptions,setStatusOptions]=useState([])    
     const[priorityOptions,setPriorityOptions]=useState([])
@@ -108,11 +109,12 @@ debugger
         <form className="form-container" key={ticket.id}>
             <h2>Edit Ticket</h2>
             <fieldset className="form-group">
-                <label>CreatedBy: </label><label>{ticket.employee?.fullName}</label>
+                <label>CreatedBy: </label>                
+                <Link to={`/employeeInfo/${ticket.id}`}>{ticket.employee?.fullName}</Link>                
             </fieldset>
             <fieldset className="form-group">
                 <label>Ticket: </label>
-                <input type="text" name="ticket" disabled  defaultValue={ticket.ticket?ticket.ticket:""}/>
+                <label>{ticket.ticket?ticket.ticket:""}</label>               
             </fieldset>
             <fieldset className="form-group">
                 <label></label>
