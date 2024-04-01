@@ -3,7 +3,8 @@ import { getAllTickets } from "../../services/ticketsServices"
 import { Ticket } from "./Ticket"
 import { Link } from "react-router-dom"
 import { getAssignedEmployeeTickets } from "../../services/employeeService"
-// import { Ticket } from "./Ticket"
+import { Form, InputGroup, Table } from "react-bootstrap"
+import  "./tickets.css"
 
 export const AllTickets=()=>{
     const[allTicketsList,setAllTicketsList]=useState([])
@@ -45,40 +46,49 @@ export const AllTickets=()=>{
     }, [filteredTickets]);
     
     return (
-        <><div className="divAllTickets">
+        <>
+        
+        <h4>View All Tickets</h4><div className="divAllTickets">
         <div className="divSearch">
-        <input type="text" className="txtSearch"
+        
+        <Form.Control
             placeholder="Search Ticket"
             id="txtSearch"
             onChange={(event)=>{
                 setSearchTicket(event.target.value)
-            }}
-        />
+            }}/>
+     
       </div>
-      <div className="allTicketsHeader" key={1}>
-        <div className="user-info">CreatedBy</div>
-        <div className="user-info">Ticket</div>
-        <div className="user-info">Status</div>
-        <div className="user-info">Priority</div>
-        <div className="user-info">AssignedTo</div>
-        <div className="user-info">Description</div>
-    </div>
-    <div>
+      </div>
+      
+    <Table striped hover >
+        <thead className="custom-thead">
+            <tr key={1}>
+                <td className="custom-thead">CreatedBy</td>
+                <td className="user-info">Ticket</td>
+                <td className="user-info">Status</td>
+                <td className="user-info">Priority</td>
+                <td className="user-info">AssignedTo</td>
+                <td className="user-info">Description</td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+            
             {
             filteredTickets.map(ticket=>{   
                 let assignedTo=assignedEmployeeInfo[ticket.id]
                 
                 return (
-                    <Link to={`/tickets/${ticket.id}`} className="ticketLink" key={ticket.id}>
                     <Ticket ticket={ticket} assignedTo={assignedTo}/>
-                    </Link>
                       )             
             }
                 
             )
             }
-            </div>
-            </div>
+        </tbody>
+    </Table>
+          
         </>
     )
 }

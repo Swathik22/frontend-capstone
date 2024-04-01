@@ -13,7 +13,7 @@
 .divSearch{
     display: flex;    
     justify-content: space-around;  
-    width:30%;  
+    width:50%;  
     align-items: center;
     padding:0.5rem;
     margin: 0.5rem 0;
@@ -53,7 +53,7 @@
     align-items: center;
     /* border-color: black; */
     background-color: #f6fafa79;
-    height: 100%;
+    height: 10%;
     width:100%;
 }
 
@@ -67,6 +67,7 @@
 }
 
 .divUpdateDelete{
+  padding-top: 15px;
     display: flex;
     justify-content: space-evenly;
   
@@ -105,6 +106,12 @@
     padding: 20px;
     margin:5px;
     justify-content: center;
+  }
+
+  .custom-thead {
+    background-color: #cb51ae; 
+    color: rgb(216, 95, 196); 
+    font-weight: bold;
   }
 
   

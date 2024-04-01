@@ -4,6 +4,7 @@ import { getPriorities, getStatus } from "../../services/statusService"
 import { createTicket } from "../../services/ticketsServices"
 import { useNavigate } from "react-router-dom"
 import "./newTicket.css"
+import { Button, Form } from "react-bootstrap"
 
 export const NewTicket=({currentUser})=>{
     const[allEmployees,setAllEmployees]=useState([])
@@ -76,48 +77,49 @@ export const NewTicket=({currentUser})=>{
     }
 
     return <>
-    <form key={currentUser.id} className="form-container">
-        <h2>New Ticket</h2>
-        <fieldset className="form-group">
-            <label>Ticket:</label>
-            <input type="text" name="ticket" placeholder="Enter Ticket" onChange={handleInputChanges}/>
-        </fieldset>
-        <fieldset className="form-group">
-            <label>Description:</label>
-            <textarea name="description" placeholder="Brief description about the ticket" onChange={handleInputChanges}/>
-        </fieldset>
-        <fieldset className="form-group">
-            <label>Assign To:</label>
-            <select name="employeeId" onChange={handleInputChanges}>
+    <h4>New Ticket</h4>
+    <Form key={currentUser.id} >
+        {/* <h2>New Ticket</h2> */}
+        <Form.Group >
+            <Form.Label>Ticket:</Form.Label>
+            <Form.Control name="ticket" placeholder="Enter Ticket" onChange={handleInputChanges}/>
+        </Form.Group>
+        <Form.Group className="mb-3">
+            <Form.Label>Description:</Form.Label>
+            <Form.Control as="textarea" rows={3} name="description" placeholder="Brief description about the ticket" onChange={handleInputChanges}/>
+        </Form.Group>
+        <Form.Group className="mb-3">
+            <Form.Label>Assign To:</Form.Label>
+            <Form.Select name="employeeId" onChange={handleInputChanges}>
                 <option value="0">Select Employee</option>
                 {
                     allEmployees.map((employee)=>{
                        return <option value={employee.id} key={employee.id}>{employee.fullName}</option>
                     })
                 }
-            </select>
-        </fieldset>
-        <fieldset className="form-group">
-            <label>Status:</label>
-            <select name="statusId" onChange={handleInputChanges}>
+            </Form.Select>
+        </Form.Group>
+        <Form.Group className="mb-3">
+            <Form.Label>Status:</Form.Label>
+            <Form.Select name="statusId" onChange={handleInputChanges}>
                 <option value="0">Select Status</option>
                 {
                     statuses.map((status)=>{
                        return <option value={status.id} key={status.id}>{status.name}</option>
                     })
                 }
-            </select>
-        </fieldset>
-        <fieldset className="form-group radio-group">
-            <label>Priority:</label>
-            {priorities.map((priority)=>{
-              return <div key={priority.id}><input type="radio" name="priorityId" onChange={handleInputChanges} value={priority.id}/>{priority.name}</div>
+            </Form.Select>
+        </Form.Group>
+        <Form.Group className="form-group radio-group">
+            <Form.Label>Priority:</Form.Label>
+            {priorities.map((priority)=>{               
+              return <Form.Check type="radio" key={priority.id} name="priorityId" label={priority.name} onChange={handleInputChanges} value={priority.id}/>
             })}            
-        </fieldset>
+        </Form.Group>
        
-        <footer className="saveButton">
-            <button id="btnSave" onClick={handleSave}>Save</button>
-        </footer> 
-    </form>
+        <div className="saveButton">
+            <Button id="btnSave" onClick={handleSave}>Save</Button>
+        </div> 
+    </Form>
     </>
 }

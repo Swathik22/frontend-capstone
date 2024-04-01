@@ -9,6 +9,7 @@ import { deleteAssignedEmployeeTicket,
 
 import "./newTicket.css"
 import { Profile } from "../profile/Profile"
+import { Button, Form } from "react-bootstrap"
 export const ViewTicket=()=>{    
     const[statusOptions,setStatusOptions]=useState([])    
     const[priorityOptions,setPriorityOptions]=useState([])
@@ -72,7 +73,6 @@ export const ViewTicket=()=>{
 
     const handleEditEvent=(event)=>{
         event.preventDefault()
-debugger
         const ticketToUpdate={
             id:ticket.id,
             ticket:ticket.ticket,
@@ -89,8 +89,17 @@ debugger
         else{
             assignedEmployeeTickets.resolvedDate=null
         }
+
+        const assignedTicketEntity={
+            id:assignedEmployeeTickets.id,
+            ticketId:assignedEmployeeTickets.ticketId,
+            employeeId:assignedEmployeeTickets.employeeId,
+            assignedDate:assignedEmployeeTickets.assignedDate,
+            resolvedDate:assignedEmployeeTickets.resolvedDate
+        }
+
         updateTicket(ticketToUpdate?ticketToUpdate:'').then(
-            updateAssignedEmployeeTicket(assignedEmployeeTickets).then(
+            updateAssignedEmployeeTicket(assignedTicketEntity).then(
                 navigate(`/tickets`))           
         )        
     }
@@ -106,70 +115,70 @@ debugger
 
     return (
     <>
-        <form className="form-container" key={ticket.id}>
-            <h2>Edit Ticket</h2>
-            <fieldset className="form-group">
-                <label>CreatedBy: </label>                
+    <h4>Update Ticket</h4>
+        <Form  key={ticket.id}>
+            {/* <h2>Update Ticket</h2> */}
+            <Form.Group className="form-group">
+                <Form.Label>CreatedBy: </Form.Label>                
                 <Link to={`/employeeInfo/${ticket.id}`}>{ticket.employee?.fullName}</Link>                
-            </fieldset>
-            <fieldset className="form-group">
-                <label>Ticket: </label>
-                <label>{ticket.ticket?ticket.ticket:""}</label>               
-            </fieldset>
-            <fieldset className="form-group">
-                <label></label>
-            </fieldset>
-            <fieldset className="form-group">
-                <label>Description:</label>
-                <textarea name="description" value={ticket.description?ticket.description:""} onChange={handleInputChangesForForm}/>
-            </fieldset>
-            <fieldset className="form-group">
-                <label>Status:</label>
-                <select value={ticket.statusId} name="statusId" onChange={handleInputChangesForForm}>
+            </Form.Group>
+            <Form.Group className="form-group">
+                <Form.Label>Ticket: </Form.Label>
+                <Form.Label>{ticket.ticket?ticket.ticket:""}</Form.Label>               
+            </Form.Group>            
+            <Form.Group className="form-group">
+                <Form.Label>Description:</Form.Label>
+                {/* <Form.Control as="textarea" rows={3} name="description" placeholder="Brief description about the ticket" onChange={handleInputChanges}/> */}
+                <Form.Control as="textarea" rows={3} name="description" value={ticket.description?ticket.description:""} onChange={handleInputChangesForForm}/>
+            </Form.Group>
+            <Form.Group className="form-group">
+                <Form.Label>Status:</Form.Label>
+                <Form.Select value={ticket.statusId} name="statusId" onChange={handleInputChangesForForm}>
                     <option value="0">select Status</option>
                     {statusOptions.map((status)=>{
                         return <option value={status.id} key={status.id}>{status.name}</option>
                     })}
-                </select>                    
-            </fieldset>
-            <fieldset className="form-group radio-group">
-                <label>Priority:</label>
+                </Form.Select>                    
+            </Form.Group>
+            <Form.Group className="form-group radio-group">
+                <Form.Label>Priority:</Form.Label>
                 {priorityOptions.map(priorityObj => (
-                    <label key={priorityObj.id}>
-                        <input
+                    <Form.Label key={priorityObj.id}>
+                        
+                        <Form.Check
                             type="radio"
                             name="priorityId"                           
                             value={priorityObj.id}
-                            
+                            label={priorityObj.name}
                             checked={parseInt(ticket.priorityId) === priorityObj.id}
                                 onChange={handleInputChangesForForm}
                         />
-                        {priorityObj.name}
-                    </label>
+                        
+                    </Form.Label>
                 ))}     
-            </fieldset>
-            <fieldset className="form-group">
-                <label>AssignedTo:</label>
-                <select value={assignedEmployeeTickets?.employeeId} name="employeeId" 
+            </Form.Group>
+            <Form.Group className="form-group">
+                <Form.Label>AssignedTo:</Form.Label>
+                <Form.Select value={assignedEmployeeTickets?.employeeId} name="employeeId" 
                     onChange={handleAssigneeTicketEvent}
                 >
                     <option value="0">select Employee</option>
                     {allEmployees.map((employee)=>{
                         return <option value={employee.id} key={employee.id}>{employee.fullName}</option>
                     })}
-                </select>    
-            </fieldset>
-            <footer >
+                </Form.Select>    
+            </Form.Group>
+          
                 <div className="divUpdateDelete">
                     <div>
-                        <button id="btnEdit" className="updateBtn" onClick={handleEditEvent}>Update</button>
+                        <Button id="btnEdit" variant="primary" onClick={handleEditEvent}>Update</Button>
                     </div>  
                     <div>                 
-                        <button id="btnDelete" className="deleteBtn" disabled={!deleteBtnEnable} onClick={handleDeleteEvent}>Delete</button>
+                        <Button id="btnDelete" variant="danger" disabled={!deleteBtnEnable} onClick={handleDeleteEvent}>Delete</Button>
                     </div> 
                 </div>
-            </footer>
-        </form>
+            
+        </Form>
     </>
     )
 }

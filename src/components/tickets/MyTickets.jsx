@@ -2,7 +2,8 @@ import { useEffect, useState } from "react"
 import { getAllTickets } from "../../services/ticketsServices"
 import { Ticket } from "./Ticket"
 import { Link } from "react-router-dom"
-import { getAssignedTicketsByEmployeeId } from "../../services/employeeService"
+import { getAssignedEmployeeTickets, getAssignedTicketsByEmployeeId } from "../../services/employeeService"
+import { Form, Table } from "react-bootstrap"
 // import { Ticket } from "./Ticket"
 
 export const MyTickets=({currentUser})=>{
@@ -10,6 +11,7 @@ export const MyTickets=({currentUser})=>{
     const[raisedTickets,setRaisedTickets]=useState([])
     const[assignedTickets,setAssignedTickets]=useState([])
     const[filteredTickets,setFilteredTickets]=useState([])
+    const [assignedEmployeeInfo, setAssignedEmployeeInfo] = useState({})
 
     //two set of tickets, 1)Assigned tickets and 2)Raised tickets
     useEffect(()=>{
@@ -27,20 +29,42 @@ export const MyTickets=({currentUser})=>{
         getAssignedTicketsByEmployeeId(currentUser.id).then((ticketsList)=>{            
             const ticketArray=[]
             ticketsList.map(ticket=>{
-                return ticketArray.push(ticket.ticket)  
-            })          
-            
+                return ticketArray.push(ticket)  
+            })  
+
             const commonElements = allTicketsArray.filter(item1 =>
                 ticketArray.some(item2 => item1.id === item2.id))
                 setAssignedTickets(commonElements)
             })
+
+
     },[currentUser])
 
     useEffect(()=>{        
         const raisedAndAssignedTicketsList = [...raisedTickets, ...assignedTickets];
             setFilteredTickets(raisedAndAssignedTicketsList);     
-            setAllTicketsList(raisedAndAssignedTicketsList)      
+            setAllTicketsList(raisedAndAssignedTicketsList)   
+              
     },[raisedTickets,assignedTickets])
+
+    useEffect(() => {
+        const fetchAssignedEmployeeInfo = async () => {
+            const assignedInfoPromises = filteredTickets.map(async ticket => {
+                const info = await getAssignedEmployeeTickets(ticket.id);               
+                return { id: ticket.id, employeeName: info[0].employee?.fullName };
+            });
+    
+            const assignedInfo = await Promise.all(assignedInfoPromises);
+            const newAssignedEmployeeInfo = assignedInfo.reduce((acc, curr) => {
+                acc[curr.id] = curr.employeeName;
+                return acc;
+            }, {});
+    
+            setAssignedEmployeeInfo(newAssignedEmployeeInfo);
+        };
+    
+        fetchAssignedEmployeeInfo();
+    }, [filteredTickets]);
 
     const handleCheckEvent=(event)=>{  
         if(event.target.name==="AssignedTickets"){
@@ -60,33 +84,41 @@ export const MyTickets=({currentUser})=>{
 
     return (        
         <>
+        <h4>View My Tickets</h4>
             <div className="divCheckBox">
+                
             <input type="Checkbox"  
                    name="AssignedTickets"                    
-                   onChange={handleCheckEvent}
-            />Assigned Tickets         
+                   onChange={handleCheckEvent}                 
+            />  Assigned Tickets
+        
             </div>           
-                  
-        <div className="allTicketsHeader">
-            <div className="user-info">CreatedBy</div>
-            <div className="user-info">Ticket</div>
-            <div className="user-info">Status</div>
-            <div className="user-info">Priority</div>
-            <div className="user-info">AssignedTo</div>
-            <div className="user-info">Description</div>
-        </div>
-     
+             
+     <Table striped hover >
+        <thead className="custom-thead">
+            <tr key={1}>
+                <td className="user-info">CreatedBy</td>
+                <td className="user-info">Ticket</td>
+                <td className="user-info">Status</td>
+                <td className="user-info">Priority</td>
+                <td className="user-info">AssignedTo</td>
+                <td className="user-info">Description</td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
             {            
             filteredTickets.map(ticket=>{
-                return (                    
-                    <Link to={`/tickets/${ticket.id}`} className="ticketLink" key={ticket.id}>
-                    <Ticket ticket={ticket} key={ticket.id} assignedTo={ticket.employee?.fullName}/>
-                    </Link>
+                let assignedTo=assignedEmployeeInfo[ticket.id]
+                return (
+                <Ticket ticket={ticket} key={ticket.id} assignedTo={assignedTo}/>
                       )             
             }
                 
             )
             }
+             </tbody>
+    </Table>
         </>
     )
 }

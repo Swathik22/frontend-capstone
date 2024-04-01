@@ -94,3 +94,10 @@
     width:150px;
     height:auto;
 }
+
+.divUpdate{
+  padding-top: 15px;
+    display: flex;
+    justify-content: space-evenly;
+  
+}

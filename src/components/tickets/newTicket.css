@@ -1,6 +1,6 @@
 /* Form container */
 .form-container {
-    max-width: 600px;
+    max-width: 1000px;
     border:2px solid rgb(231, 151, 46);
     margin: 0 auto;
   margin-top: 10px;
@@ -10,10 +10,10 @@
   }
   
   /* Form elements */
-  .form-group {
+  /* .form-group {
     margin-bottom: 0px;
     padding: 10px;
-  }
+  } */
   
   label {
     display: block;
